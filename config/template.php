@@ -35,4 +35,10 @@ return [
     //自定义标签库
     'taglib_pre_load'    => 'app\common\taglib\Clt',
     'taglib_build_in'  =>  'cx,app\common\taglib\Clt',
+    'tpl_replace_string'  =>  [
+        '__STATIC__'=>'/static',
+        '__ADMIN__' => '/static/admin',
+        '__PLUGINS__' => '/static/plugins',
+        '__COMMON__' => '/static/common',
+    ]
 ];

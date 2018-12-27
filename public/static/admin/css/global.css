@@ -28,9 +28,9 @@
 
 .header-index{background-color: #080018; border: none;}
 
-.layui-layout-admin{border-bottom: solid 5px #1aa094;}
+.layui-layout-admin{border-bottom: solid 5px #393d49;}
 .layui-layout-admin .layui-header{border-bottom-color: #1aa094; background-color: #393D49;}
-
+.layui-layout-admin .layui-body{top: 65px;}
 .header .layui-nav .layui-nav-item{margin: 0 10px; line-height: 65px;}
 .header .layui-nav .layui-this{background-color:#393D49}
 .header .layui-nav .layui-nav-item a:hover, .header .layui-nav .layui-this a{color: #fff;}
@@ -262,7 +262,7 @@ body .site-demo-nav .layui-nav-item{line-height: 40px}
 	box-shadow:none;
 }
 .admin-nav-card{
-	margin-top: 4px;
+	margin-top: 0px;
 }
 .admin-nav-card .layui-icon{
 	position: relative;
@@ -274,7 +274,7 @@ body .site-demo-nav .layui-nav-item{line-height: 40px}
 }
 .admin-nav-card>.layui-tab-title{
     background-color: #f2f2f2;
-	border-bottom: 1px solid #1AA094;
+	/*border-bottom: 1px solid #1AA094;*/
 }
 .admin-nav-card .layui-tab-title cite{
 	font-style: normal;
