@@ -8,6 +8,7 @@ class Index extends Common{
         parent::initialize();
     }
     public function index(){
+        $this->redirect('/user/login/index');
         $order = input('order','createtime');
         $time = time();
         $list=db('article')->alias('a')

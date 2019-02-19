@@ -1,28 +1,19 @@
 {include file="common/loginHead"/}
 <div class="fly-home">
-    {if condition="$userInfo['avatar']"}
-    <img src="{:imgUrl($userInfo['avatar'])}" alt="{$userInfo.username}">
-    {else/}
-    <img src="/static/user/images/avatar/default.png" alt="{$userInfo.username}">
-    {/if}
-    <h1>
-        {$userInfo.username}
-        {if condition="$userInfo['sex'] eq 1"}
-        <i class="iconfont icon-nan"></i>
-        {else/}
-        <i class="iconfont icon-nv"></i>
-        {/if}
-    </h1>
-    <p class="fly-home-info">
-        <i class="iconfont icon-shijian"></i><span>{:toDate($userInfo['reg_time'],'Y-m-d')} 加入</span>
-        {if condition="$userInfo['city']"}
-        <i class="iconfont icon-chengshi"></i><span>{:toCity($userInfo['city'])}</span>
-        {/if}
-    </p>
-    {if isset($userInfo['sign'])}
-    <p class="fly-home-sign">（ {$userInfo.sign}）</p>
-    {/if}
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            {if condition="$userInfo['avatar']"}
+            <img src="{:imgUrl($userInfo['avatar'])}" alt="{$userInfo.username}">
+            {else/}
+            <img src="/static/user/images/avatar/default.png" alt="{$userInfo.username}">
+            {/if}
+        </div>
+        <div class="layui-form-item">
+            <button class="layui-btn">获取</button>
+        </div>
+    </form>
 </div>
+
 
 {include file="common/footer"/}
 </body>
