@@ -3,18 +3,38 @@
     <form class="layui-form" action="">
         <div class="layui-form-item">
             {if condition="$userInfo['avatar']"}
-            <img src="{:imgUrl($userInfo['avatar'])}" alt="{$userInfo.username}">
+            <img class="user-img" src="{:imgUrl($userInfo['img'])}" alt="{$userInfo.username}">
             {else/}
-            <img src="/static/user/images/avatar/default.png" alt="{$userInfo.username}">
+            <img class="user-img" src="/static/user/images/avatar/default.png" alt="{$userInfo.username}">
             {/if}
         </div>
         <div class="layui-form-item">
-            <button class="layui-btn">获取</button>
+            <button class="layui-btn get-img" lay-submit lay-filter="get-img">获取</button>
         </div>
     </form>
 </div>
 
 
 {include file="common/footer"/}
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form
+            ,$ = layui.jquery;
+
+        form.on('submit(get-img)', function (data) {
+            var loading = layer.load(1, {shade: [0.1, '#fff']});
+            $.post('{:url("index/getImg")}', [], function (res) {
+                layer.close(loading);
+                if (res.code > 0) {
+                    layer.msg(res.msg, {time: 1800, icon: 1});
+                    $('.user-img').attr('src',res.data);
+                } else {
+                    layer.msg(res.msg, {time: 1800, icon: 2});
+                }
+            });
+            return false;
+        })
+    });
+</script>
 </body>
 </html>

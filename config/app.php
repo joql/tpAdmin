@@ -165,6 +165,18 @@ return [
     //文件上传
     'addwater'=>false,
     'watertext'=>'PHPADMIN',
+    'is_redis'=>true,
+    'redis' => [
+        'host'       => '127.0.0.1',
+        'port'       => 6379,
+        'password'   => '2018',
+        'select'     => 0,
+        'timeout'    => 60,
+        'expire'     => 0,
+        'persistent' => false,
+        'prefix'     => 'tpadmin_',
+    ],
+
     'version'=>'5.7.3'
 
 ];
