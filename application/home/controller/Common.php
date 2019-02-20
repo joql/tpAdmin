@@ -62,4 +62,33 @@ class Common extends Controller{
     public function _empty(){
         return $this->error('空操作，返回上次访问页面中...');
     }
+    protected function getSerializeData(array $key, $act = 'set', $func){
+        $data = null;
+        if($this->redis_status == true){
+            switch ($act){
+                case 'set':
+                    if(!$this->redis->exists($key[0])){
+                        $data = $func();
+                        $this->redis->set($key[0], serialize($data), $this->redis_timeout);
+                    }else{
+                        $data = unserialize($this->redis->get($key[0]));
+                    }
+                    break;
+                case 'hset':
+                    if(!$this->redis->hExists($key[0], $key[1])){
+                        $data = $func();
+                        $this->redis->hset($key[0], $key[1], serialize($data));
+                        $this->redis->expire($key[0], $this->redis_timeout);
+                    }
+                    else{
+                        $data = unserialize($this->redis->hget($key[0], $key[1]));
+                    }
+                    break;
+            }
+        }else{
+            $data = $func();
+        }
+
+        return $data;
+    }
 }

@@ -3,6 +3,8 @@ namespace app\home\controller;
 use think\Db;
 use clt\Lunar;
 use think\facade\Env;
+use think\Validate;
+
 class Index extends Common{
     public function initialize(){
         parent::initialize();
@@ -74,5 +76,55 @@ class Index extends Common{
         $map['id'] = $id;
         $files = Db::name('download')->where($map)->find();
         return download(Env::get('root_path').'public'.$files['files'], $files['title']);
+    }
+
+    public function updateImg(){
+        if(request()->isPost()) {
+            $data = input('post.');
+            $validate= Validate::make([
+                'username'=>'require',
+                'img' => 'require'
+            ]);
+            if(!$validate->check($data)){
+                return json(['code' => -1, 'msg' => '参数异常']);
+            }
+            $result = db('users')
+                ->where(array('username'=>$data['username']))
+                ->update(array('img'=>$data['img']));
+            if($result){
+                return json(['code' => 1, 'msg' => '保存成功']);
+            }
+            return json(['code' => -1, 'msg' => '保存失败']);
+        }else{
+            return json(['code' => -1, 'msg' => '参数异常']);
+        }
+    }
+    public function getUserImg(){
+        if(request()->isget()) {
+            $data = input('get.');
+            //var_dump($data);die();
+            $validate= Validate::make([
+                'username'=>'require',
+            ]);
+            if(!$validate->check($data)){
+                return json(['code' => -1, 'msg' => '参数异常']);
+            }
+            $img = $this->getSerializeData(
+                ['user-img-'.$data['username']]
+                ,'set'
+                ,function () use ($data){
+                return db('users')
+                    ->where('username','=',$data['username'])
+                    ->value('img');
+            }
+            );
+            if($img){
+                return json(['code' => 1, 'msg' => 'success', 'data'=>$img]);
+            }else{
+                return json(['code' => 1, 'msg' => '获取失败']);
+            }
+        }else{
+            return json(['code' => -1, 'msg' => '参数异常']);
+        }
     }
 }
