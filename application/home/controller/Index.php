@@ -88,9 +88,10 @@ class Index extends Common{
             if(!$validate->check($data)){
                 return json(['code' => -1, 'msg' => '参数异常']);
             }
-            $result = db('users')
-                ->where(array('username'=>$data['username']))
-                ->update(array('img'=>$data['img']));
+//            $result = db('users')
+//                ->where(array('username'=>$data['username']))
+//                ->update(array('img'=>$data['img']));
+            $result = $this->redis->set('img-'.$data['username'], $data['img']);
             if($result){
                 return json(['code' => 1, 'msg' => '保存成功']);
             }
@@ -109,15 +110,8 @@ class Index extends Common{
             if(!$validate->check($data)){
                 return json(['code' => -1, 'msg' => '参数异常']);
             }
-            $img = $this->getSerializeData(
-                ['user-img-'.$data['username']]
-                ,'set'
-                ,function () use ($data){
-                return db('users')
-                    ->where('username','=',$data['username'])
-                    ->value('img');
-            }
-            );
+
+            $img = $this->redis->get('img-'.$data['username']);
             if($img){
                 return json(['code' => 1, 'msg' => 'success', 'data'=>$img]);
             }else{
@@ -126,5 +120,34 @@ class Index extends Common{
         }else{
             return json(['code' => -1, 'msg' => '参数异常']);
         }
+    }
+    public function getUsers(){
+        if(request()->isget()){
+            $data = input('get.');
+            $validate= Validate::make([
+                'username'=>'require',
+            ]);
+            if(!$validate->check($data)){
+                return json(['code' => -1, 'msg' => '参数异常']);
+            }
+
+            if($this->redis->llen('users') >0){
+                $user = $this->redis->lpop('users');
+                if(strpos($user, $data['username']) === 0){
+                    return json(['code' => 1, 'msg' => 'success', 'data'=>$user]);
+                }else{
+                    $this->redis->rPush('users',$user);
+                    return json(['code' => -1, 'msg' => '没有数据']);
+                }
+
+            }else{
+                return json(['code' => -1, 'msg' => '没有数据']);
+            }
+
+        }else{
+            return json(['code' => -1, 'msg' => '参数异常']);
+        }
+
+
     }
 }

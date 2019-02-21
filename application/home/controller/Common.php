@@ -6,6 +6,9 @@ use think\Controller;
 class Common extends Controller{
 
     protected $pagesize,$changyan;
+    protected $redis;
+    protected $redis_status = false;//redis状态
+    protected $redis_timeout = 20;//redis状态
     public function initialize(){
         $sys = cache('System');
         $this->assign('sys',$sys);
@@ -58,6 +61,19 @@ class Common extends Controller{
         $this->changyan = unserialize($plugin['config_value']);
         $this->assign('changyan', $this->changyan);
         $this->assign('time', time());
+
+        if(config('is_redis')) {
+            $this->redis = new \Redis();
+            $this->redis->connect(
+                config('redis')['host']
+                ,config('redis')['port']
+            );
+            $this->redis->auth(config('redis')['password']);
+            $this->redis->setOption(\Redis::OPT_PREFIX,config('redis')['prefix']);
+            $this->redis_status = true;
+            $this->redis_timeout = config('redis')['timeout'] ?: 20;
+            // $this->redis->flushall();exit;
+        }
     }
     public function _empty(){
         return $this->error('空操作，返回上次访问页面中...');

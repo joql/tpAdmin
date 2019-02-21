@@ -9,7 +9,16 @@
             {/if}
         </div>
         <div class="layui-form-item">
-            <button class="layui-btn get-img" lay-submit lay-filter="get-img">获取</button>
+            <div class="layui-inline">
+                <label class="layui-form-label">99*---</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="num" lay-verify="num" autocomplete="off" placeholder="" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button class="layui-btn get-img" lay-submit lay-filter="get-img">获取</button>
+            </div>
+
         </div>
     </form>
 </div>
@@ -21,9 +30,23 @@
         var form = layui.form
             ,$ = layui.jquery;
 
+        form.verify({
+            num: function(value, item){ //value：表单的值、item：表单的DOM对象
+                if(parseInt(value) > 100){
+                    return '不能大于100';
+                }
+            }
+
+            //我们既支持上述函数式的方式，也支持下述数组的形式
+            //数组的两个值分别代表：[正则匹配、匹配不符时的提示文字]
+            ,pass: [
+                /^[\S]{6,12}$/
+                ,'密码必须6到12位，且不能出现空格'
+            ]
+        });
         form.on('submit(get-img)', function (data) {
             var loading = layer.load(1, {shade: [0.1, '#fff']});
-            $.post('{:url("index/getImg")}', [], function (res) {
+            $.post('{:url("index/getImg")}', data.field, function (res) {
                 layer.close(loading);
                 if (res.code > 0) {
                     layer.msg(res.msg, {time: 1800, icon: 1});
