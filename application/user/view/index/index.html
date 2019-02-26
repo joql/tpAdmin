@@ -1,8 +1,26 @@
 {include file="common/loginHead"/}
+<style>
+    .fly-home{
+        display: inline-block;
+        border-radius: 27px;
+    }
+</style>
+<div style="text-align: center">
+<div class="fly-home" style="top: -95px;left: -16px;">
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            {if condition="$img2"}
+            <img class="user-img" src="{:imgUrl($img2)}" alt="{$userInfo.username}">
+            {else/}
+            <img class="user-img" src="/static/user/images/avatar/default.png" alt="{$userInfo.username}">
+            {/if}
+        </div>
+    </form>
+</div>
 <div class="fly-home">
     <form class="layui-form" action="">
         <div class="layui-form-item">
-            {if condition="$userInfo['avatar']"}
+            {if condition="$userInfo['img']"}
             <img class="user-img" src="{:imgUrl($userInfo['img'])}" alt="{$userInfo.username}">
             {else/}
             <img class="user-img" src="/static/user/images/avatar/default.png" alt="{$userInfo.username}">
@@ -22,7 +40,7 @@
         </div>
     </form>
 </div>
-
+</div>
 
 {include file="common/footer"/}
 <script>

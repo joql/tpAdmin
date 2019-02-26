@@ -100,6 +100,28 @@ class Index extends Common{
             return json(['code' => -1, 'msg' => '参数异常']);
         }
     }
+    public function updateImg24(){
+        if(request()->isPost()) {
+            $data = input('post.');
+            $validate= Validate::make([
+                'username'=>'require',
+                'img' => 'require'
+            ]);
+            if(!$validate->check($data)){
+                return json(['code' => -1, 'msg' => '参数异常']);
+            }
+//            $result = db('users')
+//                ->where(array('username'=>$data['username']))
+//                ->update(array('img'=>$data['img']));
+            $result = $this->redis->set('img2-'.$data['username'], $data['img']);
+            if($result){
+                return json(['code' => 1, 'msg' => '保存成功']);
+            }
+            return json(['code' => -1, 'msg' => '保存失败']);
+        }else{
+            return json(['code' => -1, 'msg' => '参数异常']);
+        }
+    }
     public function getUserImg(){
         if(request()->isget()) {
             $data = input('get.');
@@ -113,7 +135,9 @@ class Index extends Common{
 
             $img = $this->redis->get('img-'.$data['username']);
             if($img){
-                return json(['code' => 1, 'msg' => 'success', 'data'=>$img]);
+                return json(['code' => 1, 'msg' => 'success', 'data'=>$img],200,[],[
+                    'json_encode_param' => JSON_UNESCAPED_SLASHES,
+                ]);
             }else{
                 return json(['code' => 1, 'msg' => '获取失败']);
             }

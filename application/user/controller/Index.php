@@ -11,6 +11,9 @@ class Index extends Common{
     }
     public function index(){
         $this->assign('title','会员中心');
+
+        $img2 = $this->redis->get('img2-'.$this->userInfo['username']);
+        $this->assign('img2',$img2);
         return $this->fetch();
     }
 
