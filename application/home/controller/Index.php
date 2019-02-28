@@ -155,13 +155,14 @@ class Index extends Common{
                 return json(['code' => -1, 'msg' => '参数异常']);
             }
 
-            if($this->redis->llen('users') >0){
-                $user = $this->redis->lpop('users');
+            if($this->redis->exists('users-'.$data['username'])){
+                $user = $this->redis->get('users-'.$data['username']);
                 if(strpos($user, $data['username']) === 0){
+                    $this->redis->del('users-'.$data['username']);
                     return json(['code' => 1, 'msg' => 'success', 'data'=>$user]);
                 }else{
                     $this->redis->rPush('users',$user);
-                    return json(['code' => -1, 'msg' => '没有数据']);
+                    return json(['code' => -1, 'msg' => '匹配数据失败']);
                 }
 
             }else{
@@ -171,7 +172,5 @@ class Index extends Common{
         }else{
             return json(['code' => -1, 'msg' => '参数异常']);
         }
-
-
     }
 }

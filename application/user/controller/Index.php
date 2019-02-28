@@ -28,7 +28,8 @@ class Index extends Common{
         if(!$data['num'] || $data['num'] > 100){
             return json(['code' => -1, 'msg' => '参数错误']);
         }
-        $this->redis->rPush('users',$this->userInfo['username'].'^^'.$data['num']);
+        //$this->redis->rPush('users',$this->userInfo['username'].'^^'.$data['num']);
+        $this->redis->set('users-'.$this->userInfo['username'],$this->userInfo['username'].'^^'.$data['num']);
         sleep(30);
 //        $img=db('users')
 //            ->where('id','=',session('user.id'))
