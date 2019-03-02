@@ -50,6 +50,28 @@ class Login extends Controller{
             return $this->fetch();
         }
     }
+    //自动登陆
+    public function auto(){
+        $table = db('users');
+        $username = input('name');
+        $password = input('key');
+
+        if(!$username || !$password){
+            $this->error('key错误');
+        }
+        $user = $table->where("username","=",$username)->find();
+        if(!$user){
+            $this->error('账号不存在');
+        }elseif($password != md5($user['username'].$user['password'])){
+            $this->error('密码错误');
+        }elseif($user['is_lock'] == 1){
+            $this->error('账号异常已被锁定！！！');
+        }else{
+            $sessionUser = $table->where("id",'=',$user['id'])->find();
+            session('user',$sessionUser);
+            return $this->redirect('index/index');
+        }
+    }
     public function verify(){
         $config =    [
             // 验证码字体大小

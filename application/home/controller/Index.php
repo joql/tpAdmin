@@ -91,7 +91,7 @@ class Index extends Common{
 //            $result = db('users')
 //                ->where(array('username'=>$data['username']))
 //                ->update(array('img'=>$data['img']));
-            $result = $this->redis->set('img-'.$data['username'], $data['img']);
+            $result = $this->redis->set('img_4_'.$data['username'], $data['img']);
             if($result){
                 return json(['code' => 1, 'msg' => '保存成功']);
             }
@@ -110,10 +110,8 @@ class Index extends Common{
             if(!$validate->check($data)){
                 return json(['code' => -1, 'msg' => '参数异常']);
             }
-//            $result = db('users')
-//                ->where(array('username'=>$data['username']))
-//                ->update(array('img'=>$data['img']));
-            $result = $this->redis->set('img2-'.$data['username'], $data['img']);
+
+            $result = $this->redis->set('img_3_'.$data['username'], $data['img']);
             if($result){
                 return json(['code' => 1, 'msg' => '保存成功']);
             }
@@ -128,12 +126,13 @@ class Index extends Common{
             //var_dump($data);die();
             $validate= Validate::make([
                 'username'=>'require',
+                'p_type'=>'in:3,4',
             ]);
             if(!$validate->check($data)){
                 return json(['code' => -1, 'msg' => '参数异常']);
             }
 
-            $img = $this->redis->get('img-'.$data['username']);
+            $img = $this->redis->get('img_'.$data['p_tpye'].'_'.$data['username']);
             if($img){
                 return json(['code' => 1, 'msg' => 'success', 'data'=>$img],200,[],[
                     'json_encode_param' => JSON_UNESCAPED_SLASHES,
@@ -150,18 +149,18 @@ class Index extends Common{
             $data = input('get.');
             $validate= Validate::make([
                 'username'=>'require',
+                'p_type'=>'in:3,4',
             ]);
             if(!$validate->check($data)){
                 return json(['code' => -1, 'msg' => '参数异常']);
             }
 
-            if($this->redis->exists('users-'.$data['username'])){
-                $user = $this->redis->get('users-'.$data['username']);
+            if($this->redis->exists('requset_list_'.$data['p_tpye'].'_'.$data['username'])){
+                $user = $this->redis->get('requset_list_'.$data['p_tpye'].'_'.$data['username']);
                 if(strpos($user, $data['username']) === 0){
-                    $this->redis->del('users-'.$data['username']);
+                    $this->redis->del('requset_list_'.$data['p_tpye'].'_'.$data['username']);
                     return json(['code' => 1, 'msg' => 'success', 'data'=>$user]);
                 }else{
-                    $this->redis->rPush('users',$user);
                     return json(['code' => -1, 'msg' => '匹配数据失败']);
                 }
 

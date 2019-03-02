@@ -4,27 +4,34 @@
         display: inline-block;
         border-radius: 27px;
     }
+    @media screen and (max-width: 600px) {
+        .qr{
+           display:none;
+        }
+    }
 </style>
 <div style="text-align: center">
-<div class="fly-home" style="top: -95px;left: -16px;">
-    <form class="layui-form" action="">
-        <div class="layui-form-item">
-            {if condition="$img2"}
-            <img class="user-img-2" src="{:imgUrl($img2)}" alt="{$userInfo.username}">
-            {else/}
-            <img class="user-img-2" src="/static/user/images/avatar/default.png" alt="{$userInfo.username}">
-            {/if}
+<div class="fly-home qr" style="top:-155px;left: -16px;">
+    <div class="layui-card">
+        <div class="layui-card-header">自动登录二维码</div>
+        <div class="layui-card-body">d
+            <div id="qrcode"></div>
         </div>
-    </form>
+    </div>
 </div>
 <div class="fly-home">
     <form class="layui-form" action="">
         <div class="layui-form-item">
-            {if condition="$userInfo['img']"}
-            <img class="user-img" src="{:imgUrl($userInfo['img'])}" alt="{$userInfo.username}">
-            {else/}
             <img class="user-img" src="/static/user/images/avatar/default.png" alt="{$userInfo.username}">
-            {/if}
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">类型</label>
+            <div class="layui-input-block">
+                <select name="t_type" lay-filter="t_type" lay-verify="require">
+                    <option value="3">固定</option>d
+                    <option value="4">动态</option>
+                </select>
+            </div>
         </div>
         <div class="layui-form-item">
             <div class="layui-inline">
@@ -43,7 +50,9 @@
 </div>
 
 {include file="common/footer"/}
+<script src="/static/plugins/qrcode/qrcode.min.js"></script>
 <script>
+    new QRCode(document.getElementById("qrcode"), "{$auto_login|raw}");
     layui.use(['form'], function () {
         var form = layui.form
             ,$ = layui.jquery;

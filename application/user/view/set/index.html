@@ -68,30 +68,27 @@
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">地址</label>
+                            <label for="L_mobile" class="layui-form-label">国美账号</label>
                             <div class="layui-input-inline">
-                                <select name="province" lay-filter="province">
-                                    <option value="">请选择省</option>
-                                    {volist name="province" id="vo"}
-                                    <option value="{$vo.id}" {if condition="$userInfo['province'] eq $vo['id']"}selected{/if}>{$vo.name}</option>
-                                    {/volist}
-                                </select>
+                                <input type="text" id="gm_no" name="gm_no" lay-verify="require" value="{$userInfo.gm_no}" class="layui-input">
                             </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label for="L_mobile" class="layui-form-label">国美密码</label>
                             <div class="layui-input-inline">
-                                <select name="city" lay-filter="city" id="city">
-                                    <option value="">请选择市</option>
-                                    {volist name="city" id="vo"}
-                                    <option value="{$vo.id}" {if condition="$userInfo['city'] eq $vo['id']"}selected{/if}>{$vo.name}</option>
-                                    {/volist}
-                                </select>
+                                <input type="text" id="gm_pwd" name="gm_pwd" lay-verify="require" value="{$userInfo.gm_pwd}" class="layui-input">
                             </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label for="L_mobile" class="layui-form-label">可提现金额</label>
                             <div class="layui-input-inline">
-                                <select name="district" id="district">
-                                    <option value="">请选择县/区</option>
-                                    {volist name="district" id="vo"}
-                                    <option value="{$vo.id}" {if condition="$userInfo['district'] eq $vo['id']"}selected{/if}>{$vo.name}</option>
-                                    {/volist}
-                                </select>
+                                <input type="text" id="" name="" lay-verify="" value="{$userInfo.money}" class="layui-input" disabled="">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label for="L_mobile" class="layui-form-label">支付宝号</label>
+                            <div class="layui-input-inline">
+                                <input type="text" placeholder="用于提现" id="zfb_no" {if empty($userInfo.zfb_no)}name="zfb_no"{else /} disabled=""{/if} value="{$userInfo.zfb_no}" class="layui-input" >
                             </div>
                         </div>
                         <div class="layui-form-item layui-form-text">
