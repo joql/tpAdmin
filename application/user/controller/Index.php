@@ -35,7 +35,7 @@ class Index extends Common{
             return json(['code' => -1, 'msg' => '参数错误']);
         }
 
-        $this->redis->set('requset_list_'.$data['t_type'].'-'.$this->userInfo['username'],$this->userInfo['username'].'^^'.$data['num']);
+        $this->redis->set('requset_list_'.$data['t_type'].'_'.$this->userInfo['username'],$this->userInfo['username'].'^^'.$data['num']);
         sleep(30);
         $img = $this->redis->get('img_'.$data['t_type'].'_'.$this->userInfo['username']);
         if($img){

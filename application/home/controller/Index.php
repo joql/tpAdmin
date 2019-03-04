@@ -155,10 +155,10 @@ class Index extends Common{
                 return json(['code' => -1, 'msg' => '参数异常']);
             }
 
-            if($this->redis->exists('requset_list_'.$data['p_tpye'].'_'.$data['username'])){
-                $user = $this->redis->get('requset_list_'.$data['p_tpye'].'_'.$data['username']);
+            if($this->redis->exists('requset_list_'.$data['p_type'].'_'.$data['username'])){
+                $user = $this->redis->get('requset_list_'.$data['p_type'].'_'.$data['username']);
                 if(strpos($user, $data['username']) === 0){
-                    $this->redis->del('requset_list_'.$data['p_tpye'].'_'.$data['username']);
+                    $this->redis->del('requset_list_'.$data['p_type'].'_'.$data['username']);
                     return json(['code' => 1, 'msg' => 'success', 'data'=>$user]);
                 }else{
                     return json(['code' => -1, 'msg' => '匹配数据失败']);
